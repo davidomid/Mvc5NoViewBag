@@ -11,7 +11,7 @@ using Mvc5NoViewBag.Models;
 namespace Mvc5NoViewBag.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
