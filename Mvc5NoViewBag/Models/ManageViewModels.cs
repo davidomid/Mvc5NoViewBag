@@ -12,12 +12,15 @@ namespace Mvc5NoViewBag.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+        public string StatusMessage { get; set; }
     }
 
     public class ManageLoginsViewModel
     {
         public IList<UserLoginInfo> CurrentLogins { get; set; }
         public IList<AuthenticationDescription> OtherLogins { get; set; }
+        public string StatusMessage { get; set; }
+        public bool ShowRemoveButton { get; set; }
     }
 
     public class FactorViewModel
