@@ -1,7 +1,11 @@
 ﻿namespace Mvc5NoViewBag.Models
 {
-    public class AboutPageViewModel
+    public class AboutPageViewModel : BasePageViewModel
     {
-        public string Message { get; set; }
+        public AboutPageViewModel() : base("About")
+        {
+        }
+
+        public string Message => "Your application description page.";
     }
 }

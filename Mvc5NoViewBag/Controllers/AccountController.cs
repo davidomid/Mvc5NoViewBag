@@ -84,7 +84,7 @@ namespace Mvc5NoViewBag.Controllers
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
-                    return View("Lockout");
+                    return View("Lockout", new BasePageViewModel("Locked Out"));
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
@@ -102,7 +102,7 @@ namespace Mvc5NoViewBag.Controllers
             // Require that the user has already logged in via username/password or external login
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
-                return View("Error");
+                return View("Error", new BasePageViewModel("Error"));
             }
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
@@ -129,7 +129,7 @@ namespace Mvc5NoViewBag.Controllers
                 case SignInStatus.Success:
                     return RedirectToLocal(model.ReturnUrl);
                 case SignInStatus.LockedOut:
-                    return View("Lockout");
+                    return View("Lockout", new BasePageViewModel("Locked Out"));
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid code.");
@@ -142,7 +142,8 @@ namespace Mvc5NoViewBag.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            RegisterViewModel model = new RegisterViewModel();
+            return View(model);
         }
 
         //
@@ -182,10 +183,14 @@ namespace Mvc5NoViewBag.Controllers
         {
             if (userId == null || code == null)
             {
-                return View("Error");
+                return View("Error", new BasePageViewModel("Error"));
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+            if (result.Succeeded)
+            {
+                return this.View("ConfirmEmail", new BasePageViewModel("Confirm Email"));
+            }
+            return View("Error", new BasePageViewModel("Error"));
         }
 
         //
@@ -209,7 +214,9 @@ namespace Mvc5NoViewBag.Controllers
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
+
+                    BasePageViewModel forgotPasswordConfirmationModel = new BasePageViewModel("Forgot Password Confirmation");
+                    return View("ForgotPasswordConfirmation", forgotPasswordConfirmationModel);
                 }
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
@@ -229,7 +236,8 @@ namespace Mvc5NoViewBag.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
-            return View();
+            BasePageViewModel model = new BasePageViewModel("Forgot Password Confirmation");
+            return View(model);
         }
 
         //
@@ -237,7 +245,11 @@ namespace Mvc5NoViewBag.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
-            return code == null ? View("Error") : View();
+            ResetPasswordViewModel model = new ResetPasswordViewModel
+            {
+                Code = code
+            };
+            return code == null ? View("Error", new BasePageViewModel("Error")) : View();
         }
 
         //
@@ -271,7 +283,8 @@ namespace Mvc5NoViewBag.Controllers
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
-            return View();
+            BasePageViewModel model = new BasePageViewModel("Reset password confirmation");
+            return View(model);
         }
 
         //
@@ -293,7 +306,7 @@ namespace Mvc5NoViewBag.Controllers
             var userId = await SignInManager.GetVerifiedUserIdAsync();
             if (userId == null)
             {
-                return View("Error");
+                return View("Error", new BasePageViewModel("Error"));
             }
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
             var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
@@ -315,7 +328,7 @@ namespace Mvc5NoViewBag.Controllers
             // Generate the token and send it
             if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
             {
-                return View("Error");
+                return View("Error", new BasePageViewModel("Error"));
             }
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
@@ -338,7 +351,7 @@ namespace Mvc5NoViewBag.Controllers
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
-                    return View("Lockout");
+                    return View("Lockout", new BasePageViewModel("Locked Out"));
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
@@ -401,7 +414,8 @@ namespace Mvc5NoViewBag.Controllers
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
-            return View();
+            BasePageViewModel model = new BasePageViewModel("Login Failure");
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)

@@ -1,12 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
 namespace Mvc5NoViewBag.Models
 {
-    public class IndexViewModel
+    public class IndexViewModel : BasePageViewModel
     {
+        public IndexViewModel() : base("Manage")
+        {
+        }
+
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
@@ -15,8 +20,12 @@ namespace Mvc5NoViewBag.Models
         public string StatusMessage { get; set; }
     }
 
-    public class ManageLoginsViewModel
+    public class ManageLoginsViewModel : BasePageViewModel
     {
+        public ManageLoginsViewModel() : base("Manage your external logins")
+        {
+        }
+
         public IList<UserLoginInfo> CurrentLogins { get; set; }
         public IList<AuthenticationDescription> OtherLogins { get; set; }
         public string StatusMessage { get; set; }
@@ -28,7 +37,7 @@ namespace Mvc5NoViewBag.Models
         public string Purpose { get; set; }
     }
 
-    public class SetPasswordViewModel
+    public class SetPasswordViewModel : BasePageViewModel
     {
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -38,12 +47,21 @@ namespace Mvc5NoViewBag.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("NewPassword",
+            ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public SetPasswordViewModel() : base("Create Password")
+        {
+        }
     }
 
-    public class ChangePasswordViewModel
+    public class ChangePasswordViewModel : BasePageViewModel
     {
+        public ChangePasswordViewModel() : base("Change Password")
+        {
+        }
+
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
@@ -57,19 +75,24 @@ namespace Mvc5NoViewBag.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("NewPassword",
+            ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
 
-    public class AddPhoneNumberViewModel
+    public class AddPhoneNumberViewModel : BasePageViewModel
     {
+        public AddPhoneNumberViewModel() : base("Phone Number")
+        {
+        }
+
         [Required]
         [Phone]
         [Display(Name = "Phone Number")]
         public string Number { get; set; }
     }
 
-    public class VerifyPhoneNumberViewModel
+    public class VerifyPhoneNumberViewModel : BasePageViewModel
     {
         [Required]
         [Display(Name = "Code")]
@@ -79,11 +102,17 @@ namespace Mvc5NoViewBag.Models
         [Phone]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
+
+        public string Status { get; set; }
+
+        public VerifyPhoneNumberViewModel() : base("Verify Phone Number")
+        {
+        }
     }
 
     public class ConfigureTwoFactorViewModel
     {
         public string SelectedProvider { get; set; }
-        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
+        public ICollection<SelectListItem> Providers { get; set; }
     }
 }

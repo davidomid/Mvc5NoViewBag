@@ -1,11 +1,7 @@
 ﻿@model Mvc5NoViewBag.Models.IndexViewModel
-@{
-    ViewBag.Title = "Manage";
-}
+<h2>@Model.Title.</h2>
 
-<h2>@ViewBag.Title.</h2>
-
-<p class="text-success">@ViewBag.StatusMessage</p>
+<p class="text-success">@Model.StatusMessage</p>
 <div>
     <h4>Change your account settings</h4>
     <hr />

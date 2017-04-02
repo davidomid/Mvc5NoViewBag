@@ -1,7 +1,11 @@
 ﻿namespace Mvc5NoViewBag.Models
 {
-    public class ContactPageViewModel
+    public class ContactPageViewModel : BasePageViewModel
     {
-        public string Message { get; set; }
+        public ContactPageViewModel() : base("Contact")
+        {
+        }
+
+        public string Message => "Your contact page.";
     }
 }

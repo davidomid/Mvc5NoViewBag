@@ -3,13 +3,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Mvc5NoViewBag.Models
 {
-    public class ExternalLoginConfirmationViewModel
+    public class ExternalLoginConfirmationViewModel : BasePageViewModel
     {
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
         public string ReturnUrl { get; set; }
         public string LoginProvider { get; set; }
+
+        public ExternalLoginConfirmationViewModel() : base("Register")
+        {
+        }
     }
 
     public class ExternalLoginListViewModel
@@ -17,15 +21,19 @@ namespace Mvc5NoViewBag.Models
         public string ReturnUrl { get; set; }
     }
 
-    public class SendCodeViewModel
+    public class SendCodeViewModel : BasePageViewModel
     {
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
         public string ReturnUrl { get; set; }
         public bool RememberMe { get; set; }
+
+        public SendCodeViewModel() : base("Send")
+        {
+        }
     }
 
-    public class VerifyCodeViewModel
+    public class VerifyCodeViewModel : BasePageViewModel
     {
         [Required]
         public string Provider { get; set; }
@@ -39,6 +47,10 @@ namespace Mvc5NoViewBag.Models
         public bool RememberBrowser { get; set; }
 
         public bool RememberMe { get; set; }
+
+        public VerifyCodeViewModel() : base("Verify")
+        {
+        }
     }
 
     public class ForgotViewModel
@@ -48,7 +60,7 @@ namespace Mvc5NoViewBag.Models
         public string Email { get; set; }
     }
 
-    public class LoginViewModel
+    public class LoginViewModel : BasePageViewModel
     {
         [Required]
         [Display(Name = "Email")]
@@ -64,9 +76,13 @@ namespace Mvc5NoViewBag.Models
         public bool RememberMe { get; set; }
 
         public string ReturnUrl { get; set; }
+
+        public LoginViewModel() : base("Log in")
+        {
+        }
     }
 
-    public class RegisterViewModel
+    public class RegisterViewModel : BasePageViewModel
     {
         [Required]
         [EmailAddress]
@@ -83,9 +99,13 @@ namespace Mvc5NoViewBag.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public RegisterViewModel() : base("Register")
+        {
+        }
     }
 
-    public class ResetPasswordViewModel
+    public class ResetPasswordViewModel : BasePageViewModel
     {
         [Required]
         [EmailAddress]
@@ -104,13 +124,21 @@ namespace Mvc5NoViewBag.Models
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
+
+        public ResetPasswordViewModel() : base("Reset password")
+        {
+        }
     }
 
-    public class ForgotPasswordViewModel
+    public class ForgotPasswordViewModel : BasePageViewModel
     {
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        public ForgotPasswordViewModel() : base("Forgot your password?")
+        {
+        }
     }
 }

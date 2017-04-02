@@ -11,24 +11,19 @@ namespace Mvc5NoViewBag.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            BasePageViewModel model = new BasePageViewModel("Home Page");
+            return View(model);
         }
 
         public ActionResult About()
         {
-            AboutPageViewModel model = new AboutPageViewModel
-            {
-                Message = "Your application description page."
-            };
+            AboutPageViewModel model = new AboutPageViewModel();
             return View(model);
         }
 
         public ActionResult Contact()
         {
-            ContactPageViewModel model = new ContactPageViewModel
-            {
-                Message = "Your contact page."
-            };
+            ContactPageViewModel model = new ContactPageViewModel();
             return View(model);
         }
     }
