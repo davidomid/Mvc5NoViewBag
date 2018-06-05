@@ -44,7 +44,6 @@ namespace Mvc5NoViewBag.Models
         {
         }
 
-        [Display(Name = "Create Local Login")]
         public SetPasswordFormViewModel Form { get; } = new SetPasswordFormViewModel();
     }
 
@@ -63,19 +62,17 @@ namespace Mvc5NoViewBag.Models
         public string ConfirmPassword { get; set; }
     }
 
-    public class ChangePasswordPageViewModel : BasePageViewModel
+    public class ChangePasswordFormViewData
     {
-        public ChangePasswordPageViewModel(ChangePasswordFormViewModel form) : base("Change Password")
-        {
-            this.Form = form;
-        }
+        public string Heading { get; } = "Change Password Form";
 
-        [Display(Name = "Change Password Form")]
-        public ChangePasswordFormViewModel Form { get; }
+        public string SubmitButtonText { get; } = "Change password"; 
     }
 
     public class ChangePasswordFormViewModel
     {
+        public ChangePasswordFormViewData ViewData { get; set; } 
+
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
@@ -89,9 +86,18 @@ namespace Mvc5NoViewBag.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
-        [System.ComponentModel.DataAnnotations.Compare("NewPassword",
-            ErrorMessage = "The new password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public class ChangePasswordPageViewModel : BasePageViewModel
+    {
+        public ChangePasswordPageViewModel(ChangePasswordFormViewModel form) : base("Change Password")
+        {
+            this.Form = form;
+        }
+
+        public ChangePasswordFormViewModel Form { get; }
     }
 
     public class AddPhoneNumberViewModel : BasePageViewModel

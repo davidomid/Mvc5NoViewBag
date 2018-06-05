@@ -218,7 +218,10 @@ namespace Mvc5NoViewBag.Controllers
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
-            ChangePasswordPageViewModel model = new ChangePasswordPageViewModel(new ChangePasswordFormViewModel());
+            ChangePasswordPageViewModel model = new ChangePasswordPageViewModel(new ChangePasswordFormViewModel
+            {
+                ViewData = new ChangePasswordFormViewData()
+            });
             return View(model);
         }
 
@@ -242,6 +245,7 @@ namespace Mvc5NoViewBag.Controllers
                 }
                 AddErrors(result);
             }
+            model.ViewData = new ChangePasswordFormViewData();
             return View(new ChangePasswordPageViewModel(model));
         }
 
