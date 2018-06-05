@@ -37,7 +37,18 @@ namespace Mvc5NoViewBag.Models
         public string Purpose { get; set; }
     }
 
-    public class SetPasswordViewModel : BasePageViewModel
+    public class SetPasswordPageViewModel : BasePageViewModel
+    {
+
+        public SetPasswordPageViewModel() : base("Create Password")
+        {
+        }
+
+        [Display(Name = "Create Local Login")]
+        public SetPasswordFormViewModel Form { get; } = new SetPasswordFormViewModel();
+    }
+
+    public class SetPasswordFormViewModel
     {
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -50,18 +61,21 @@ namespace Mvc5NoViewBag.Models
         [System.ComponentModel.DataAnnotations.Compare("NewPassword",
             ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        public SetPasswordViewModel() : base("Create Password")
-        {
-        }
     }
 
-    public class ChangePasswordViewModel : BasePageViewModel
+    public class ChangePasswordPageViewModel : BasePageViewModel
     {
-        public ChangePasswordViewModel() : base("Change Password")
+        public ChangePasswordPageViewModel(ChangePasswordFormViewModel form) : base("Change Password")
         {
+            this.Form = form;
         }
 
+        [Display(Name = "Change Password Form")]
+        public ChangePasswordFormViewModel Form { get; }
+    }
+
+    public class ChangePasswordFormViewModel
+    {
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]

@@ -218,7 +218,7 @@ namespace Mvc5NoViewBag.Controllers
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
-            ChangePasswordViewModel model = new ChangePasswordViewModel();
+            ChangePasswordPageViewModel model = new ChangePasswordPageViewModel(new ChangePasswordFormViewModel());
             return View(model);
         }
 
@@ -226,24 +226,23 @@ namespace Mvc5NoViewBag.Controllers
         // POST: /Manage/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        public async Task<ActionResult> ChangePassword(ChangePasswordFormViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
-            }
-            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-            if (result.Succeeded)
-            {
-                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                if (user != null)
+                var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                    if (user != null)
+                    {
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    }
+                    return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                AddErrors(result);
             }
-            AddErrors(result);
-            return View(model);
+            return View(new ChangePasswordPageViewModel(model));
         }
 
         //
@@ -257,7 +256,7 @@ namespace Mvc5NoViewBag.Controllers
         // POST: /Manage/SetPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
+        public async Task<ActionResult> SetPassword(SetPasswordFormViewModel model)
         {
             if (ModelState.IsValid)
             {
